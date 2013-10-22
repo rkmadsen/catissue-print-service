@@ -4,4 +4,5 @@ caTissuePrintWebService.war
 output
 outputclient
 WEB-INF/lib
+WEB-INF/classes
 local
