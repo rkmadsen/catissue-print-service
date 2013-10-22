@@ -84,10 +84,10 @@ Print web service has to be deployed on a server which has access to printer Mak
 3.	Unzip the PrintWebService.zip and go to unzipped folder through command line and execute “ant build_war”.
 4.	Copy war from unzipped folder to JBOSS-HOME/server/default/deploy/
 5.	Start print web service JBoss server.
-6.	For accessing this web service from caTissue application, make the following change in caTissue application JBoss:
+6.	For accessing this web service from caTissue application, make the following change in caTissue application JBoss make sure to cofigure https or http for your environment:
 
 	File: JBOSS-HOME/server/default/catissuecore-properties/PrintServiceImplementor.properties
-    printWebServiceEndPoint= http://<ipaddress:portNo>/caTissuePrintWebService/Print?wsdl> 
+    printWebServiceEndPoint= http(s)://<ipaddress:portNo>/caTissuePrintWebService/Print?wsdl> 
 	This is the URL of Print Web Service, where IP address and port is of the server where print web service is deployed.
 
 7.	Restart caTissue Suite application JBoss server.
