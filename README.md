@@ -101,4 +101,6 @@ The labels to be printed are written to .cmd files will be created for each spec
 
 2.	When labels are printed from specimen collection group (SCG) page or from collection protocol based specimen entry page, labels for all specimens (collected or pending) under that SCG will be printed. 
 	
-	
+3. If using SSL for web services set the truststore path for the JVM on startup of jboss with -D args. # Truststore settings for JVM on the client web app
+
+	*JAVA_OPTS="$JAVA_OPTS -Djavax.net.ssl.trustStore=/path/to/truststore -Djavax.net.ssl.trustStorePassword=password" 
