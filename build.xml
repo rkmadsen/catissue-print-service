@@ -3,16 +3,18 @@
   <import file="ivy-targets.xml"/>
   
 	<property name="base.dir" value="."/>
-  	<property name="jboss.home.dir" value="/Users/randy/projectsServices/jboss-5.1.0.GA"/> 
+	<property file="${base.dir}/printer.properties" />
+	<property name="jboss.endorsed.dir" value="${jboss.home.dir}/lib/endorsed"/>	
+	<property name="jboss.deploy.dir" value="${jboss.home.dir}/server/default/deploy"/>
 	<property name="classes.dir" value="${base.dir}/WEB-INF/classes"/> 
 	<property name="wsdl.dir" value="${base.dir}/WEB-INF/wsdl"/>
 	<property name="src.dir" value="../WEB-INF/src" />
-	<property name="target.dir" value="${base.dir}/WEB-INF/classes" />
+	<property name="target.dir" value="${base.dir}/WEB-INF/classes" />	
 	<property name="java.home.dir" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home"/>  
-
-	
+			
 	<target name="copyFiles" depends="ivy-runtime">
 		<copy file="./output/PrintWebService.wsdl" todir="./WEB-INF/wsdl"/>
+		<copy file="./local/web.xml" todir="./WEB-INF/" overwrite="true"/>
 		<copy todir="./WEB-INF/classes">
 		    <fileset dir="./output">
 		    	<include name="edu/**" />
@@ -34,7 +36,35 @@
 			</fileset>  
 		</war>
 	</target>
+	
+	<target name="deploy_print_service" depends="build_war, reset_printer_dir, recreate_printer_dirs">
+		<copy file="caTissuePrintWebService.war" todir="${jboss.deploy.dir}" overwrite="true"/>
+		<copy todir="${jboss.endorsed.dir}" overwrite="true">
+		      <fileset dir="ivylib/compile">
+				<include name="jbossws-native-*"/>
+			</fileset>
+		</copy>
+	</target>
 
+	<target name="reset_printer_dir">
+	        <input message="Recreate Printer Directories:" addproperty="printer.reset"/>
+	        <condition property="recreate.print.dir">
+	            <not>
+	                <equals arg1="${printer.reset}" arg2="true" trim="true"/>
+	            </not>
+	        </condition>
+	    </target>
+		
+	<target name="recreate_printer_dirs" if="recreate.print.dir" description="Delete and recreate printer directories in jboss home dir">
+		<delete dir="${jboss.home.dir}/print/printer"/>
+		<delete dir="${jboss.home.dir}/print/printlabel"/>
+		<delete dir="${jboss.home.dir}print/printrules"/>
+		<mkdir dir="${jboss.home.dir}/print/printer"/>
+		<mkdir dir="${jboss.home.dir}/print/printlabel"/>
+		<mkdir dir="${jboss.home.dir}/print/printrules"/>
+		<copy file="${base.dir}/local/print_rules.xls" todir="${jboss.home.dir}/print/printrules" />
+	</target>
+	
 	<target name="clean_temp_dir_war" description="delete temp directory used for caCORE unpack">
 			<!-- do delete ${temp.dir} -->
 			<delete file="${jboss.home.dir}/server/default/deploy/caTissuePrintWebService.war" />
@@ -71,7 +101,7 @@
 		</copy>
 	</target>
 
-	<target name="wsprovide" depends="compile" description="wsprovide task for JBoss-4.2.2.GA">
+	<target name="wsprovide" depends="compile" description="wsprovide task for JBoss">
 			  <taskdef name="wsprovide" classname="org.jboss.wsf.spi.tools.ant.WSProvideTask">
 			  	 <classpath refid="wsprovide.path" />	
 			   </taskdef>
@@ -92,7 +122,7 @@
 
 	
 	
-	<target name="wsconsume" description="wsconsume task for JBoss-4.2.2.GA">
+	<target name="wsconsume" description="wsconsume task for JBoss">
 			<taskdef name="wsconsume" 
 			classname="org.jboss.wsf.spi.tools.ant.WSConsumeTask">
 			 <classpath refid="wsprovide.path" />	

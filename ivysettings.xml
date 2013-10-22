@@ -3,11 +3,9 @@
   <caches defaultCacheDir="${user.home}/.ivy2-${ant.project.name}" useOrigin="true"/>
   <resolvers>
     <chain name="nci-chain">
-
-      <ibiblio name="nci" m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/groups/hosted/washuprint"/>
-            
+      <ibiblio name="nci" m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/groups/hosted/washuprint"/>            
       <ibiblio name="cbiit" m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/groups/public"/>
-      
-    </chain>		
+      <ibiblio name="maven" m2compatible="true" usepoms="true" useMavenMetadata="true" root="https://ncimvn.nci.nih.gov/nexus/content/repositories/central/"/>
+    </chain>
   </resolvers>
 </ivysettings>
