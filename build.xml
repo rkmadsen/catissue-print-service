@@ -10,7 +10,7 @@
 	<property name="wsdl.dir" value="${base.dir}/WEB-INF/wsdl"/>
 	<property name="src.dir" value="../WEB-INF/src" />
 	<property name="target.dir" value="${base.dir}/WEB-INF/classes" />	
-	<property name="java.home.dir" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home"/>  
+	<property name="java.home.dir" value="${java.home}"/>  
 			
 	<target name="copyFiles" depends="ivy-runtime">
 		<copy file="./output/PrintWebService.wsdl" todir="./WEB-INF/wsdl"/>
