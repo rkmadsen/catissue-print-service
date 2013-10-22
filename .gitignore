@@ -1,0 +1,6 @@
+bin
+ivylib
+caTissuePrintWebService.war
+output
+outputclient
+WEB-INF/lib
