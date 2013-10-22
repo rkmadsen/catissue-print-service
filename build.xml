@@ -3,12 +3,12 @@
   <import file="ivy-targets.xml"/>
   
 	<property name="base.dir" value="."/>
-  <property name="jboss.home.dir" value="E:/jboss-4.2.2.GA"/> 
+  	<property name="jboss.home.dir" value="/Users/randy/projectsServices/jboss-5.1.0.GA"/> 
 	<property name="classes.dir" value="${base.dir}/WEB-INF/classes"/> 
 	<property name="wsdl.dir" value="${base.dir}/WEB-INF/wsdl"/>
 	<property name="src.dir" value="../WEB-INF/src" />
 	<property name="target.dir" value="${base.dir}/WEB-INF/classes" />
-	<property name="java.home.dir" value="C:/Program Files/Java/jdk1.5.0_06"/>  
+	<property name="java.home.dir" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home"/>  
 
 	
 	<target name="copyFiles" depends="ivy-runtime">
@@ -52,7 +52,7 @@
 	<target name="compile" depends="ivy-compile">
 		<echo  message="${base.dir}" />
 				
-    <javac destdir="${target.dir}" includes="**/*.*" includeAntRuntime="false" debug="yes" target="1.5">
+    <javac destdir="${target.dir}" includes="**/*.*" includeAntRuntime="false" debug="yes" target="1.6">
 	  	<src path="${base.dir}/src"/>
       
 			<classpath>

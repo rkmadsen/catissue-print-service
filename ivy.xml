@@ -3,8 +3,7 @@
         module="WashuPrintService" />
   <configurations>
     <conf name="default" />
-    <conf name="compile" />
-    
+    <conf name="compile" />  
     <conf name="runtime" /> 
     
   </configurations>
@@ -13,7 +12,7 @@
                               
     <dependency org="javax.servlet"
                 name="servlet-api"
-                rev="2.3"
+                rev="2.4"
                 conf="compile, runtime->default"/> 
                 
     <dependency org="poi"
@@ -66,6 +65,7 @@
                 rev="1.0"
                 conf="runtime->master"/>     
                 
+    <!--
     <dependency org="org.jboss"
                 name="jboss-xerces"
                 rev="4.2.2.GA"
@@ -75,7 +75,8 @@
                 name="jboss-xalan"
                 rev="4.2.2.GA"
                 conf="runtime->master"/>   
-                
+    -->
+  
     <dependency org="msv"
                 name="xsdlib"
                 rev="20051114"
@@ -84,7 +85,7 @@
     <dependency org="javax.xml"
                 name="jaxrpc"
                 rev="1.1"
-                conf="lib->master"/>  
+                conf="runtime->master"/>  
                 
     <dependency org="washuprint"
                 name="jaxrpc-api"
