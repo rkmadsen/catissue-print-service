@@ -20,6 +20,9 @@ import java.util.StringTokenizer;
 import edu.wustl.catissuecore.webservice.util.LabelResourceHandler;
 import edu.wustl.catissuecore.webservice.util.PrintWebServiceConstants;
 
+import org.apache.commons.logging.Log; 
+import org.apache.commons.logging.LogFactory;
+
 /**
  * This is the class which reads input rules through excel sheet and populates map of rules. Also generates file content as per rule.
  * @author vijay_pande
@@ -28,7 +31,9 @@ import edu.wustl.catissuecore.webservice.util.PrintWebServiceConstants;
 public class SpecimenLabelRuleHandler 
 {
 	private static HashMap<String, SpecimenLabelRule> printLabelRules;
-	private static SpecimenLabelRule defaultSpecimenLabelRule;
+	private static SpecimenLabelRule defaultSpecimenLabelRule;	
+	private static Log log = LogFactory.getLog(SpecimenLabelRuleHandler.class);
+
 	
 	public static void init() 
 	{
@@ -39,11 +44,10 @@ public class SpecimenLabelRuleHandler
 		printLabelRules = new HashMap<String, SpecimenLabelRule>();
 		try
 		{
-			//ExcelFileReader inputFile=new ExcelFileReader(PrinterPropertyHandler.getValue(PrintWebServiceConstants.RULES_INPUT_FILENAME));
-	  	   ExcelFileReader inputFile = new ExcelFileReader(System.getProperty("user.dir") + "/../print/" + PrinterPropertyHandler.getValue(PrintWebServiceConstants.RULES_INPUT_FILENAME));
-           System.out.println("JAVA_HOME "+ System.getProperty("user.dir"));
-           System.out.println("JBOSS_HOME "+ System.getenv("jboss.home"));
+		//ExcelFileReader inputFile=new ExcelFileReader(PrinterPropertyHandler.getValue(PrintWebServiceConstants.RULES_INPUT_FILENAME));			
 
+		  ExcelFileReader inputFile = new ExcelFileReader(System.getProperty("jboss.home.dir") + "/print/" + PrinterPropertyHandler.getValue(PrintWebServiceConstants.RULES_INPUT_FILENAME));
+			
            String[][] data=inputFile.getAllRows();
            int noOfRows=data.length;
            for(int i=1;i<noOfRows;i++)
@@ -53,21 +57,20 @@ public class SpecimenLabelRuleHandler
 				if(row!=null && row.length == noOfColumns)
 				{
 					SpecimenLabelRule rule = new  SpecimenLabelRule();
-					rule.setSpecimenClass(row[PrintWebServiceConstants.INDEX_SPECIMEN_CLASS]);  //0
-					rule.setSpecimenType(row[PrintWebServiceConstants.INDEX_SPECIMEN_TYPE]); //1
-					rule.setLabelType(row[PrintWebServiceConstants.INDEX_LABEL_FORMAT]); //2
-					rule.setDataOnLabel(row[PrintWebServiceConstants.INDEX_DATA_ON_LABEL]); //3
-					rule.setPrinter(row[PrintWebServiceConstants.INDEX_PRINTER]); //4
-					rule.setWorkStationIP(row[PrintWebServiceConstants.INDEX_WORKSTAION_IP]); //5
+					rule.setSpecimenClass(row[PrintWebServiceConstants.INDEX_SPECIMEN_CLASS]);
+					rule.setSpecimenType(row[PrintWebServiceConstants.INDEX_SPECIMEN_TYPE]);
+					rule.setLabelType(row[PrintWebServiceConstants.INDEX_LABEL_FORMAT]);
+					rule.setDataOnLabel(row[PrintWebServiceConstants.INDEX_DATA_ON_LABEL]);
+					rule.setPrinter(row[PrintWebServiceConstants.INDEX_PRINTER]);
+					rule.setWorkStationIP(row[PrintWebServiceConstants.INDEX_WORKSTAION_IP]);
 					String key = row[PrintWebServiceConstants.INDEX_SPECIMEN_CLASS]+"_"+row[PrintWebServiceConstants.INDEX_SPECIMEN_TYPE]+"_"+row[PrintWebServiceConstants.INDEX_WORKSTAION_IP];
-					//System.out.println("rules check "+rule.getPrinter()+rule.getWorkStationIP());
 					printLabelRules.put(key, rule);
 				}
            }
 		}
 		catch (Exception e) 
 		{
-			System.out.println("Error while parsing rules for printing labels"+e);
+			log.error("Error while parsing rules for printing labels"+e);
 		}
 	}
 	
@@ -77,57 +80,57 @@ public class SpecimenLabelRuleHandler
 	 * @param specimenType
 	 * @return specimenLabelRule object of SpecimenLabelRule
 	 */
-	public static SpecimenLabelRule getRule(String specimenClass, String specimenType,String workStationIP) throws IOException // All three are null
+	public static SpecimenLabelRule getRule(String specimenClass, String specimenType,String workStationIP) throws IOException
 	{
 		SpecimenLabelRule specimenLabelRule = defaultSpecimenLabelRule;
-		System.out.println("specimenLabelRule 1 "+ specimenLabelRule);
+		log.info("specimenLabelRule 1 "+ specimenLabelRule);
 		
 		String key = specimenClass+"_"+specimenType+"_"+workStationIP;
 		String keyAny = specimenClass+"_"+PrintWebServiceConstants.ANY+"_"+workStationIP;
 		if(printLabelRules.containsKey(key))
 		{
-			System.out.println("specimenLabelRule a "+ specimenLabelRule);
+			log.info("specimenLabelRule a "+ specimenLabelRule);
 
 			return specimenLabelRule = printLabelRules.get(key);
 		}
 		else if(printLabelRules.containsKey(keyAny))
 		{
-			System.out.println("specimenLabelRule b "+ specimenLabelRule);
+			log.info("specimenLabelRule b "+ specimenLabelRule);
 
 			return specimenLabelRule = printLabelRules.get(keyAny);
 		}
 		Set<String> keySetForRule = new LinkedHashSet<String>();
 		keySetForRule = printLabelRules.keySet();
-		System.out.println("keySetForRule " + keySetForRule.size());
+		log.info("keySetForRule " + keySetForRule.size());		
 		Iterator keySetIterator = keySetForRule.iterator();
 		while(keySetIterator.hasNext())
 		{
 			String tempKey = (String)keySetIterator.next();
 			String[] keySplit = tempKey.split("_");
 			String keyWorkStationIP = keySplit[2];
-			String replacedKeyIP = keyWorkStationIP.replace(".", "_");//127_0_0_1		
-			String replacedIP = workStationIP.replace(".", "_");	//10_88_164_26		
-			String[] workStationIPSplit = replacedKeyIP.split("_"); //[127, 0, 0, 1]
-			String[] currentWorkStationIP = replacedIP.split("_"); // [10, 88, 164, 26]
+			String replacedKeyIP = keyWorkStationIP.replace(".", "_");		
+			String replacedIP = workStationIP.replace(".", "_");			
+			String[] workStationIPSplit = replacedKeyIP.split("_");
+			String[] currentWorkStationIP = replacedIP.split("_");
 			if(currentWorkStationIP[0].equals(workStationIPSplit[0]) && currentWorkStationIP[1].equals(workStationIPSplit[1]) && workStationIPSplit[2].equalsIgnoreCase("XXX"))
 			{
 				String newKey = specimenClass+"_"+specimenType+"_"+keyWorkStationIP;
 				String newKeyAny = specimenClass+"_"+PrintWebServiceConstants.ANY+"_"+keyWorkStationIP;
 				if(printLabelRules.containsKey(newKey))
 				{
-					System.out.println("specimenLabelRule 2 "+ specimenLabelRule);
+					log.info("specimenLabelRule 2 "+ specimenLabelRule);
 					return specimenLabelRule = printLabelRules.get(newKey);
 				}
 				else if(printLabelRules.containsKey(newKeyAny))
 				{
-					System.out.println("specimenLabelRule  3 "+ specimenLabelRule);
+					log.info("specimenLabelRule  3 "+ specimenLabelRule);
 					return specimenLabelRule = printLabelRules.get(newKeyAny);
 				}
 			}
 		}
 		
 		
-	//	System.out.println("specimenLabelRule 4  "+ specimenLabelRule);
+	//	log.info("specimenLabelRule 4  "+ specimenLabelRule);
 		//else {
 			//throw new IOException("IP Adress not found");
 		//}
@@ -140,14 +143,14 @@ public class SpecimenLabelRuleHandler
 	 * @return
 	 * @throws IOException
 	 */
-	public static String getFileContentForSpecimen(HashMap<String, String> map) throws IOException//map = {label=90, barcode=90, printerType= , printerLocation= }
+	public static String getFileContentForSpecimen(HashMap<String, String> map) throws IOException
 	{
-		String specimenClass = map.get(PrintWebServiceConstants.SPECIMEN_CLASS); // null
-		String specimenType = map.get(PrintWebServiceConstants.SPECIMEN_TYPE); // null
-		String workStationIP = map.get(PrintWebServiceConstants.USER_IPADDRESS); //workStationIP =  com.sun.jdi.InternalException: Got error code in reply:35 occurred while retrieving value.
+		String specimenClass = map.get(PrintWebServiceConstants.SPECIMEN_CLASS);
+		String specimenType = map.get(PrintWebServiceConstants.SPECIMEN_TYPE);
+		String workStationIP = map.get(PrintWebServiceConstants.USER_IPADDRESS);
 		SpecimenLabelRule specimenLabelRule = getRule(specimenClass, specimenType, workStationIP);
-		String dataToPrint = specimenLabelRule.getDataOnLabel();//Specimen Label
-		System.out.println("dataprint "+ dataToPrint);
+		String dataToPrint = specimenLabelRule.getDataOnLabel();
+		log.info("dataprint "+ dataToPrint);
 		StringTokenizer stringTokenizer=new StringTokenizer(dataToPrint, ",");
 		StringBuilder stringBuilder=new StringBuilder();
 	    stringBuilder.append(LabelResourceHandler.getValue(PrintWebServiceConstants.DISPLAY_LABELNAME)+" = \""+specimenLabelRule.getLabelType()+"\""+PrintWebServiceConstants.NEWLINE);
@@ -220,7 +223,7 @@ public class SpecimenLabelRuleHandler
 			}
 			else
 			{
-				System.out.println("Not found:::::::"+field);
+				log.info("Not found:::::::"+field);
 			}
 		}
 			if(specimenLabelRule != null && specimenLabelRule.getPrinter() != null)
@@ -261,4 +264,3 @@ public class SpecimenLabelRuleHandler
 		return "";
 	}
 }
-

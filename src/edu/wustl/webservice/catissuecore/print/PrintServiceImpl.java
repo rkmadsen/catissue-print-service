@@ -20,15 +20,11 @@
  */
 package edu.wustl.webservice.catissuecore.print;
 
-import edu.wustl.catissuecore.webservice.client.PrintWebServiceFactory;
-import java.rmi.RemoteException;
-import java.util.LinkedHashMap;
 
 public class PrintServiceImpl  { /*implements PrintService{
 
 	public String print(String xmlFormat) throws RemoteException {
 		
-		System.out.println(xmlFormat);
 		PrintServiceClient printserviceClientObj=PrintWebServiceFactory.getPrintServiceClientObject();
 		
 		String msg=printserviceClientObj.print(xmlFormat);

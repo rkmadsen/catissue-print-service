@@ -17,7 +17,7 @@ public class PrintWebServiceConstants
 	public static final String CAP_LABEL_FILENAME="cap.label.filename";
 	public static final String CAP_SIDE_LABEL_FILENAME="cap.side.label.filename";
 	public static final String SIDE_LABEL_FILENAME="side.label.filename";
-	public static final String PRNTER_DIRECTORY="printer.directory";
+	public static final String PRINTER_DIRECTORY="printer.directory";
 	public static final String RULES_INPUT_FILENAME="rules.input.filename";
 	
 	public static final int INDEX_SPECIMEN_CLASS=0;

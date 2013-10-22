@@ -20,27 +20,31 @@
  */
 package edu.wustl.webservice.catissuecore.print;
 
-import edu.wustl.catissuecore.webservice.client.PrintWebServiceFactory;
-import java.rmi.RemoteException;
-import java.util.LinkedHashMap;
-
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import edu.wustl.catissuecore.webservice.client.PrintWebServiceFactory;
+
+
 @WebService (serviceName="PrintWebService")
+
 public class PrintService 
-{
-	@WebMethod
+{	
+	private Log log = LogFactory.getLog(PrintService.class);
+	
+	@WebMethod	
 	public String print(String xmlFormat)
 	{
 		
-		System.out.println(xmlFormat);
+		log.info(xmlFormat);
 		PrintServiceClient printserviceClientObj=PrintWebServiceFactory.getPrintServiceClientObject();
 		
 		String msg=printserviceClientObj.print(xmlFormat);
 		
 		return msg;
 	}
-
-
 	
 }

@@ -38,13 +38,20 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class PrintXMLParser {
-	
+import org.apache.commons.logging.Log; 
+import org.apache.commons.logging.LogFactory;
+
+import edu.wustl.catissuecore.webservice.client.WashUPrintServiceClient;
+import edu.wustl.catissuecore.webservice.util.WashuLabelFileWriter;
+
+public class PrintXMLParser {	
+
 	/* this class parse the XML data which is sent by 
 	 * the client for print.  
 	 */
 	private static Document document = null;
-	
+		
+	private static Log log = LogFactory.getLog(PrintXMLParser.class);
 	
 	/*return the LinkedHashMap of the XML data that is send by the client*/
 	
@@ -82,7 +89,6 @@ public class PrintXMLParser {
 			throw e;
 		}
 	}
-
 	
 
 	public static LinkedHashMap getMap()
@@ -100,8 +106,8 @@ public class PrintXMLParser {
 		{
 			Node child = children.item(i);
 			
-			System.out.println("--node name+"+child.getNodeName());
-		
+			log.info("--node name+"+child.getNodeName());
+					
 			if (child instanceof Element)
 			{
 				String mapKey = null;
@@ -114,7 +120,7 @@ public class PrintXMLParser {
 				    for (int k=0; k<numAttrs; k++) 
 				    {
 				        Attr attr = (Attr)map.item(k);	
-				        System.out.println(attr);
+				        log.info(attr);
 				      
 				        String attrValue = attr.getNodeValue();
 				        if(mapKey!=null)

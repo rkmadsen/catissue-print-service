@@ -22,19 +22,20 @@
 
 package edu.wustl.catissuecore.webservice.client;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
-
 import edu.wustl.webservice.catissuecore.print.PrintServiceClient;
+import org.apache.commons.logging.Log; 
+import org.apache.commons.logging.LogFactory;
+
 public class PrintWebServiceFactory {
+	
+	private static Log log = LogFactory.getLog(PrintWebServiceFactory.class);
 
 	public static PrintServiceClient getPrintServiceClientObject() 
 	{
 
 		PrintServiceClient printObj=null;			
 		String classname="edu.wustl.catissuecore.webservice.client.WashUPrintServiceClient";
-		System.out.println(classname);
+		log.info(classname);
 		try 
 			{
 				printObj = (PrintServiceClient)Class.forName(classname).newInstance();

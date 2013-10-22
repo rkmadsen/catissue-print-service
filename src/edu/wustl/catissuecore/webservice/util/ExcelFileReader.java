@@ -23,6 +23,9 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import org.apache.commons.logging.Log; 
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Class to read data from Microsoft Excel Sheet
  * @author vijay_pande
@@ -36,6 +39,9 @@ public class ExcelFileReader
 	//0=String, 1= Numeric, 2=Date
 	public static Integer[] columnDataType=new Integer[]{};
 	public static final String DATE_PATTERN_MM_DD_YYYY = "MM-dd-yyyy";
+	
+	private Log log = LogFactory.getLog(ExcelFileReader.class);
+
 	
 	/**
 	 * Constructor for class which takes Excel  file name as input parameter
@@ -127,7 +133,7 @@ public class ExcelFileReader
 				}
 			}
 			}catch(Exception e){
-				System.out.println("columnDataType["+i+"]"+columnDataType[i]);
+				log.error("columnDataType["+i+"]"+columnDataType[i]);
 			}
 		}
 		return rowContent;
@@ -158,7 +164,7 @@ public class ExcelFileReader
 	
 	public static void main(String[] args) throws Exception
 	{
-		ExcelFileReader efr=new ExcelFileReader("D:/TestBuild/catissue1.2.0.1/caTissueCore_caCORE_Client/PathogenDiscoverySerumEgypt2_Bid7529.xls");
+		ExcelFileReader efr=new ExcelFileReader("");
 		String[][] str=efr.getAllRows();
 		for(int i=0;i<str.length;i++)
 		{

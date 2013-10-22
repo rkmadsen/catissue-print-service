@@ -61,7 +61,7 @@ public class SpecimenLabelRule
 	}
 	
 	/**
-	 * Method to get Specimen Lable
+	 * Method to get Specimen Label
 	 * @return
 	 */
 	public String getLabelType() 
@@ -70,7 +70,7 @@ public class SpecimenLabelRule
 	}
 	
 	/**
-	 * Method to set Specimen Lable
+	 * Method to set Specimen Label
 	 * @param labelType
 	 */
 	public void setLabelType(String labelType) 
@@ -88,7 +88,7 @@ public class SpecimenLabelRule
 	}
 	
 	/**
-	 * Method to set data on lable to be printed
+	 * Method to set data on label to be printed
 	 * @param dataOnLabel
 	 */
 	public void setDataOnLabel(String dataOnLabel) 

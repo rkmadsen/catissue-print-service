@@ -10,19 +10,16 @@
 
 package edu.wustl.catissuecore.webservice.util;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.ServletException;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 
 /**
- * Servlet that will run on JBoss start up to Initialize SpecimenLabelRuleHandler
- * @author vijay_pande
  *
+ * Referenced classes of package edu.wustl.catissuecore.webservice.util: SpecimenLabelRuleHandler
+ *            
  */
+
 public class  SpecimenLabelRuleHandlerServlet extends HttpServlet
 {
 	/**
@@ -30,6 +27,10 @@ public class  SpecimenLabelRuleHandlerServlet extends HttpServlet
 	 */
 	private static final long serialVersionUID = 2536272325135641171L;
 
+	public SpecimenLabelRuleHandlerServlet() {
+
+	}
+	
 	/**
 	 * method to initialize SpecimenLabelRuleHandler
 	 */

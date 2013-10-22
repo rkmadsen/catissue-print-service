@@ -26,6 +26,9 @@ import edu.wustl.catissuecore.webservice.util.WashuLabelFileWriter;
 import edu.wustl.webservice.catissuecore.print.PrintServiceClient;
 import edu.wustl.webservice.catissuecore.print.PrintXMLParser;
 
+import org.apache.commons.logging.Log; 
+import org.apache.commons.logging.LogFactory;
+
 public class WashUPrintServiceClient implements PrintServiceClient{
 
 
@@ -35,11 +38,13 @@ public class WashUPrintServiceClient implements PrintServiceClient{
 	 */
 	PrintXMLParser pxp = new PrintXMLParser();
 	
+	private static Log log = LogFactory.getLog(WashUPrintServiceClient.class);
+
 	public String print(String xmlFormat)
 	{
 		try 
 		{
-			System.out.println("In WashUPrintServiceClient");
+			log.info("In WashUPrintServiceClient");
 			LinkedHashMap objMap = pxp.getPrintMap(xmlFormat);
 			printDomainObject(objMap);
 			return "Successed";
@@ -48,16 +53,16 @@ public class WashUPrintServiceClient implements PrintServiceClient{
 		catch (Exception e) 
 		{
 			e.printStackTrace();
-			System.out.println("Failed *************");
-			System.out.println(e.getMessage());
+			log.info("Failed *************");
+			log.info(e.getMessage());
 			return e.getMessage();
 		}
 	}
 
 	
 	void printDomainObject(LinkedHashMap obj) throws Exception {
-		System.out.println("In WashUPrintServiceClient.printDomainObject() --------------------");
-		new WashuLabelFileWriter().createFile(obj);//obj = {Fluid_269={label=90, barcode=90, printerType= , printerLocation= }, Tissue_270={label=91, barcode=91, printerType= , printerLocation= }}
-		System.out.println("------------------------------");
+		log.info("In WashUPrintServiceClient.printDomainObject() --------------------");
+		new WashuLabelFileWriter().createFile(obj);
+		log.info("------------------------------");
 	}
 }

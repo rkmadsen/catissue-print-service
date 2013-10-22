@@ -24,6 +24,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.logging.Log; 
+import org.apache.commons.logging.LogFactory;
 
 /**
  * File to write the Label file. This will create file as per Brady Printer
@@ -40,21 +42,24 @@ public class WashuLabelFileWriter
 	 * @param map
 	 * @throws IOException
 	 */
-	public void createFile(LinkedHashMap map) throws IOException { //map = {Fluid_269={label=90, barcode=90, printerType= , printerLocation= }, Tissue_270={label=91, barcode=91, printerType= , printerLocation= }}
-		String printDirectory = System.getProperty("user.dir") + "/../print/" + PrinterPropertyHandler.getValue("printer.directory");
+
+	private Log log = LogFactory.getLog(WashuLabelFileWriter.class);
+	
+	public void createFile(LinkedHashMap map) throws IOException {
+		String printDirectory = System.getProperty("jboss.home.dir") + "/print/" + PrinterPropertyHandler.getValue("printer.directory");
 		checkDirectory(printDirectory);
 		BufferedWriter fileWriter = null;
 		int counter = 1;
-		Set<String> keySet = map.keySet();//keySet = [Fluid_269, Tissue_270]
-		List<String> sortedList = new ArrayList<String>(keySet);//sortedList = [Fluid_269, Tissue_270]
+		Set<String> keySet = map.keySet();
+		List<String> sortedList = new ArrayList<String>(keySet);
 		Collections.sort(sortedList, new KeySetComparator());
 		for (String key : sortedList) {
-			HashMap<String, String> object = (HashMap<String, String>) map.get(key); //Key = Fluid_269
+			HashMap<String, String> object = (HashMap<String, String>) map.get(key);
 			String fileName = printDirectory + "/" + getFileName()+counter+ ".cmd";
 			FileWriter file = new FileWriter(fileName);
 			fileWriter = new BufferedWriter(file);
-			System.out.println("Writing label file in directory:" + fileName);
-			String cmdFileData = SpecimenLabelRuleHandler.getFileContentForSpecimen(object);//object = {label=90, barcode=90, printerType= , printerLocation= }
+			log.info("Writing label file in directory:" + fileName);
+			String cmdFileData = SpecimenLabelRuleHandler.getFileContentForSpecimen(object);
 			if(cmdFileData != null && !cmdFileData.equals(""))
 			{
 				fileWriter.write(cmdFileData);
@@ -73,7 +78,7 @@ public class WashuLabelFileWriter
 		File dir = new File(printDirectory);
 		if(dir==null || !dir.exists())
 		{
-			System.out.println("Directory does not exists! Creating directory "+printDirectory);
+			log.info("Directory does not exists! Creating directory "+printDirectory);
 			dir.mkdir();
 		}
 	}
