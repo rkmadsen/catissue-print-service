@@ -19,12 +19,17 @@ import java.net.URISyntaxException;
 import javax.servlet.ServletConfig;
 
 /**
- * Servlet that will run on JBoss start up to Initiailize SpecimenLabelRuleHandler
+ * Servlet that will run on JBoss start up to Initialize SpecimenLabelRuleHandler
  * @author vijay_pande
  *
  */
 public class  SpecimenLabelRuleHandlerServlet extends HttpServlet
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2536272325135641171L;
+
 	/**
 	 * method to initialize SpecimenLabelRuleHandler
 	 */
